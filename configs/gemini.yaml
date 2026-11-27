@@ -1,0 +1,28 @@
+# VideoBanana with Gemini, as in the paper. ${VAR} is read from the environment.
+
+models:
+  client: gemini
+  agent_model: gemini-3.6-flash      # intent refiner and instruction writer
+  verifier_model: gemini-3.7-flash   # verifier
+  verify_fps: 3.92                   # 8 of the 49 frames of each video
+
+gemini:
+  project: ${GOOGLE_CLOUD_PROJECT}   # Vertex AI, Application Default Credentials
+  location: global
+  mode: online                       # online, or batch (half price, needs batch_bucket)
+  # batch_bucket: gs://YOUR_BUCKET   # batch mode: Cloud Storage bucket for requests and videos
+  temperature: 0.1
+  max_output_tokens: 8192
+  max_retries: 3
+
+editor:                              # CoinVE-Edit, one persistent worker per GPU
+  repo_root: /path/to/CoinVE-Edit
+  python: /path/to/coinve-env/bin/python
+  composite_checkpoint: /path/to/CoinVE/checkpoints/coinve_edit_composite_vllm256_dit128.safetensors
+  local_model_path: /path/to/CoinVE/base_models
+  mllm_model: /path/to/CoinVE/base_models/Qwen3-VL-8B-Instruct
+  gpus: [0]
+  eval_max_pixels: 921600            # 1280 x 720
+  num_inference_steps: 50
+
+conversation: {}                     # ConversationConfig overrides; the defaults are the paper's

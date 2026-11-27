@@ -1,0 +1,16 @@
+VideoBanana and ChatVE-Bench
+
+The code in this repository is released under the Apache License 2.0 (LICENSE), except for the parts
+listed below, which keep the license of their source.
+
+The checklist judge in chatve_bench/ (the system prompts in chatve_bench/prompts/, the request format, the answer
+parsing, and the scoring rules in chatve_bench/judge.py) is adapted from the CoinVE-Bench evaluator,
+https://huggingface.co/datasets/FireCRT/CoinVE-Bench, licensed under CC BY-SA 4.0
+(https://creativecommons.org/licenses/by-sa/4.0/). These adapted parts are shared under the same license.
+
+The rubric of the VideoBanana verifier prompt (VERIFIER_SYSTEM in videobanana/conversation/verifier.py: the three
+dimensions, their criteria, scoring rubrics and notes) is adapted from the VEFX-Bench reward prompt,
+https://github.com/Visko-Platform/VEFX-Bench, licensed under the Apache License 2.0
+(https://www.apache.org/licenses/LICENSE-2.0). Changes: the intents are passed in the request and instruction
+following is scored per intent, a survey step and an explanations section are added, and the multi-turn verifier
+rewrites the lines that take Video 1 to be the unedited source.

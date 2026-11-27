@@ -1,0 +1,29 @@
+# VideoBanana with an open model (Qwen3.8-27B) for every model role, served by vLLM, e.g.
+#   vllm serve /path/to/Qwen3.8-27B --served-model-name qwen3.8-27b --max-model-len 40960 \
+#       --reasoning-parser qwen3 --limit-mm-per-prompt '{"image": 16, "video": 0}'
+
+models:
+  client: openai
+  agent_model: qwen3.8-27b           # served model name
+  verifier_model: qwen3.8-27b
+  verify_fps: 3.92                   # 8 frames of each video, sent as images
+
+openai:
+  base_urls: [http://localhost:8000/v1]   # several servers share the calls
+  max_tokens: 16384
+  context_len: 40960
+  timeout: 1800
+  attempts: 3
+
+editor:
+  repo_root: /path/to/CoinVE-Edit
+  python: /path/to/coinve-env/bin/python
+  composite_checkpoint: /path/to/CoinVE/checkpoints/coinve_edit_composite_vllm256_dit128.safetensors
+  local_model_path: /path/to/CoinVE/base_models
+  mllm_model: /path/to/CoinVE/base_models/Qwen3-VL-8B-Instruct
+  gpus: [0]
+  eval_max_pixels: 921600
+  num_inference_steps: 50
+
+conversation:
+  item_gate_floor: 3                 # intent scores must reach 4 of 4 for this verifier

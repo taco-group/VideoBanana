@@ -19,8 +19,8 @@ Jiayi Zhang<sup>1</sup>, Xiangbo Gao<sup>2</sup>, Vardhan Dongre<sup>3</sup>, Fr
 ## ✅ Release Plan
 
 - [x] ChatVE-Bench data
-- [ ] ChatVE-Bench evaluation code
-- [ ] VideoBanana code
+- [x] ChatVE-Bench evaluation code
+- [x] VideoBanana code
 
 ## 📖 Introduction
 
@@ -70,6 +70,28 @@ Editing accuracy, content preservation, and video quality across the turns of a 
 decline on all three as their outputs undergo successive generations. VideoBanana keeps its outputs within
 a few generations of the source and declines far less.
 
+## 🚀 Quick Start
+
+```bash
+git clone https://github.com/taco-group/VideoBanana.git && cd VideoBanana
+pip install -e .
+hf download JiayiZhang14/ChatVE-Bench --repo-type dataset --local-dir ChatVE-Bench
+```
+
+Run VideoBanana on ChatVE-Bench (CoinVE-Edit and the model setup: [docs/agent.md](docs/agent.md)):
+
+```bash
+python -m videobanana.run --bench ChatVE-Bench --out runs/videobanana --config configs/gemini.yaml
+```
+
+Evaluate any system's outputs, saved after every turn (judge and video-quality metrics:
+[docs/evaluation.md](docs/evaluation.md)):
+
+```bash
+python -m chatve_bench.evaluate --bench ChatVE-Bench \
+    --outputs "runs/videobanana/{session_id}/turn{turn:02d}.mp4" --out results/videobanana
+```
+
 ## 📝 Citation
 
 ```bibtex
@@ -83,6 +105,9 @@ a few generations of the source and declines far less.
 ```
 
 ## 📄 License
+
+The code is released under the [Apache License 2.0](LICENSE). The checklist judge is adapted from the
+CoinVE-Bench evaluator and keeps its CC BY-SA 4.0 license; see [NOTICE](NOTICE).
 
 ChatVE-Bench is released under the Apache License 2.0. Its source clips are cut from
 [VEFX-Bench v1.0](https://huggingface.co/datasets/xiangbog/VEFX-Bench) (Apache License 2.0).
